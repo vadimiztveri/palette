@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Draggable</title>
+    <meta http-equiv="Content-Language" content="ru">
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+    <link type="text/css" href="css/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <script src="jq/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="jq/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+
+  <style>
+    html{font-family:sans-serif;color:#555555;}
+    
+    .square-field{
+      position:relative;
+      width:279px;
+      height:279px;
+      border:5px solid #777777;
+      background:transparent url('img/bg-gb.png') no-repeat center center;
+    }
+    #square-red{
+      position:absolute;
+      width:256px;
+      height:256px;
+      left:12px;
+      top:12px;
+      background:transparent url('img/bg-r-gr.png') no-repeat;
+      opacity: 0;
+    }
+    #draggable{
+      position:absolute;
+      left:0;
+      top:0;
+      width:20px;
+      height:20px;
+      border:2px solid #fff;
+      border-radius:12px;
+      background:transparent;
+    }
+    .rectangular-field{
+      position:relative;
+      width:279px;
+      height:20px;
+      margin-top:20px;
+      border:5px solid #777;
+      background:transparent url('img/bg-r.png') no-repeat center top;
+    }
+    #fider{
+      position:absolute;
+      left:0;
+      width:6px;
+      height:12px;
+      margin:2px 7px;
+      border:2px solid #fff;
+      border-radius:5px;
+      background:transparent;
+    }
+    #color{
+      width:100px;
+      height:100px;
+      border:1px solid #cccccc;
+      background:#000000;
+    }
+    
+  </style>
+
+  </head>
+  <body>
+    <h1>Draggable</h1>
+    
+    <p>#<input id="input-color-hex" onchange="get_new_color_hex(this.value)" value="000000" onfocus="value=''"></p>
+    
+    <div class="square-field">
+      <div id="square-red"></div>
+      <div id="draggable"></div>
+    </div>
+
+    <div class="rectangular-field">
+      <div id="fider"></div>
+    </div>
+
+    <input id="rgb" value="000000"></input>
+    <div id="color"></div>
+
+    <script type="text/javascript">
+
+
+      $(function(){
+        $("#draggable").draggable({
+          cursor: "pointer",
+          containment: "parent",
+          opacity: 0.6,
+          refreshPosition: true,
+          drag: function(event, ui) {
+            get_value_square_field(ui.position.left, ui.position.top)
+          }
+        });
+      });
+
+      $(function(){
+        $("#fider").draggable({
+          cursor: "pointer",
+          containment: "parent",
+          opacity: 0.6,
+          refreshPosition: true,
+          axis: "x",
+          drag: function(event, ui) {
+            get_value_rectangular_field(ui.position.left)
+          }
+        });
+      });
+      
+	/**
+	 * Конфигурация данных о цвете
+	 */
+      var color = {
+        red: "00",
+        green: "00",
+        blue: "00"
+      }
+
+	/**
+	 * При вызове возвращает строку текущего цвета в HEX
+	 *
+	 * @example
+	 * get_hex();
+	 *
+	 * Не получает данные, берет их из конфигурации
+	 * @return {String} строка в HEX (например: FF00SS)
+	 */
+      var get_hex = function(){
+        return color.red + color.green + color.blue;
+      }
+
+	/**
+	 * Получает цвет в HEX (RGB), передает для отображения
+	 *
+	 * @example
+	 * get_new_color_hex("002244");
+	 *
+	 * @param {String} color_hex цвет в RGB (например, "002244")
+	 * Не возвращает данные, а вызывает функции отображения цвета
+	 */
+      var get_new_color_hex = function(color_hex){
+        color.red = color_hex[1] + color_hex[2];
+        color.green = color_hex[3] + color_hex[4];
+        color.blue = color_hex[5] + color_hex[6];
+        display_it();
+        move_fider();
+      }
+
+	/**
+	 * Получает значения blue и green, записывает в текущий цвет, вызывает функцию отображения
+	 *
+	 * @example
+	 * get_value_square_field("22", "44");
+	 *
+	 * @param {String} blue, green градации каждого цвета от 0 до 255 в HEX ("22", "44")
+	 * Не возвращает данные, а вызывает функции отображения цвета
+	 */
+      var get_value_square_field = function(blue, green){
+        color.green = get_dec_to_hex(green);
+        color.blue = get_dec_to_hex(blue);
+        display_it();
+      }
+      
+	/**
+	 * Получает значения red, записывает в текущий цвет, вызывает функции отображения цветов
+	 *
+	 * @example
+	 * get_value_rectangular_field(125);
+	 *
+	 * @param {Number} red градацию цвета от 0 до 255 (например: 125)
+	 * Не возвращает данные, а вызывает функции отображения цветов
+	 */
+      var get_value_rectangular_field = function(red){
+        color.red = get_dec_to_hex(red);
+        display_it();
+        change_green_blue_for_red(red);
+      }
+
+	/**
+	 * Получает значения red, меняет цвет большого квадратного окна
+	 *
+	 * @example
+	 * change_green_blue_for_red("125");
+	 *
+	 * @param {Number} red градацию цвета от 0 до 255 (например: 125)
+	 * Не возвращает данные
+	 */
+      var change_green_blue_for_red = function(red){
+        var opacity = red / 255;
+        document.getElementById('square-red').style.opacity = opacity;
+      }
+      
+	/**
+	 * Получает значение градации цвета от 0 до 255, возвращает в HEX
+	 *
+	 * @example
+	 * get_dec_to_hex(255); // return "FF"
+	 *
+	 * @param {Number} number градацию цвета от 0 до 255 (например: 255)
+     * @return {String} строка в HEX (например: FF)
+	 */
+	    var get_dec_to_hex = function(number){
+	    var hex = Number(number).toString(16);
+	    if (number < 16){
+	      hex = "0" + hex;
+	    }
+        return hex;
+      }
+
+	/**
+	 * Получает значение градации цвета в HEX, возвращает число от 0 до 256
+	 *
+	 * @example
+	 * get_dec_to_hex("ff"); // return 256
+	 *
+	 * @param {String} hex строка градации цвета в HEX (например: "ff")
+     * @return {Number} число от 0 до 255 (например: 255)
+	 */
+      var hex_to_dec = function(hex){
+        return parseInt(hex,16);
+      }
+
+	/**
+	 * Выводит новое значение цвета в HEX и отображает этот цвет
+	 *
+	 * @example
+	 * display_it(); // return "FF"
+	 *
+     * Функция не получает данные в себя, берет значения из конфигурации color, и не возвращает данные
+	 */
+      var display_it = function(){
+        var string_color = color.red + color.green + color.blue;
+        document.getElementById('rgb').value = get_hex();
+        document.getElementById('color').style.background = "#" + get_hex();
+        console
+      }
+      
+	/**
+	 * Выставляет перемещаемые бегунки в необходимое положение
+	 *
+	 * @example
+	 * move_fider();
+	 *
+     * Не получает и не возвращает значения
+	 */
+      var move_fider = function() {
+        document.getElementById('fider').style.left = hex_to_dec(color.red) + "px";
+        document.getElementById('draggable').style.top = hex_to_dec(color.green) + "px";
+        document.getElementById('draggable').style.left = hex_to_dec(color.blue) + "px";
+      }
+      
+/* Это вспомогательная функция, которая выводит картинку с переходами цветов.
+  Она ресурсоемкая, и не рекомендуется ее использовать для постоянной работы.
+  Правильнее вывести один раз, сфотографировать с эрана и поместить в проект как картинку.
+      var text = "";
+      for (i = 0;i < 256;i++){
+        var color_green = get_dec_to_hex(i);
+        var left_color = "ff" + color_green + "00";
+        var right_color = "ff" + color_green + "ff";
+        text = text + "<div style='background:linear-gradient(to right, #" + left_color + ", #" + right_color + ");'></div>"
+        console.log(text.length);
+      }
+      document.getElementById('red').innerHTML = text;
+*/
+
+    </script>
+  </body>
+</html>
