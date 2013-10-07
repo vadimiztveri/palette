@@ -50,3 +50,7 @@ html{font-family:sans-serif;color:#555555;}
   border:1px solid #cccccc;
   background:#000000;
 }
+#error{
+  font-size:70%;
+  color:#ff0000;
+}
