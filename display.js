@@ -1,11 +1,11 @@
 /**
-* Выводит новое значение цвета в HEX и отображает этот цвет
-*
-* @example
-* display_it(); // return "FF"
-*
-* Функция не получает данные в себя, берет значения из конфигурации color, и не возвращает данные
-*/
+ * Выводит новое значение цвета в поле и отображает этот цвет
+ *
+ * @example
+ * display_color;
+ *
+ * Не получает и возвращает данные. Берет значения из color
+ */
 var display_color = function(){
   var string_color = color.red + color.green + color.blue;
   document.getElementById('rgb').value = string_color;
@@ -13,13 +13,13 @@ var display_color = function(){
 }
 
 /**
-* Выставляет перемещаемые бегунки в необходимое положение
-*
-* @example
-* move_fider();
-*
-* Не получает и не возвращает значения
-*/
+ * Выставляет перемещаемые бегунки в необходимое положение в зависимости от нового цвета.
+ *
+ * @example
+ * move_fider();
+ *
+ * Не получает и возвращает данные. Берет значения из color
+ */
 var chance_pointer_position = function() {
   document.getElementById('fider').style.left = hex_to_dec(color.red) + "px";
   document.getElementById('draggable').style.top = hex_to_dec(color.green) + "px";
@@ -27,28 +27,28 @@ var chance_pointer_position = function() {
 }
 
 /**
-* Получает значения red, меняет цвет большого квадратного окна
-*
-* @example
-* change_green_blue_for_red("125");
-*
-* @param {Number} red градацию цвета от 0 до 255 (например: 125)
-* Не возвращает данные
-*/
-var change_green_blue_for_red = function(red){
+ * Получает значения red, меняет цвет большого квадратного окна.
+ *
+ * @example
+ * change_green_blue_for_red("125");
+ *
+ * @param {Number} red градацию цвета от 0 до 255 (например: 125)
+ * Не возвращает данные
+ */
+var change_green_blue_on_red = function(red){
   var opacity = red / 255;
   document.getElementById('square-red').style.opacity = opacity;
 }
 
 /**
-* Отображает сообщение об ошибке
-*
-* @example
-* display_error_massage(1);
-*
-* @param {Number} number Номер ошибки (0, 1, 2) (например: 1)
-* Номер 0 означает, что вводимые данные прошли валидацию и функция удаляет сообщение об ошибке.
-* Не возвращает данные
+ * Отображает сообщение об ошибке.
+ *
+ * @example
+ * display_error_massage(1);
+ *
+ * @param {Number} number Номер ошибки (0, 1 или 2) (например: 1)
+ * Номер 0 означает, что вводимые данные прошли валидацию и функция удаляет сообщение об ошибке.
+ * Не возвращает данные.
 */
 var display_error_massage = function(number) {
   var text = "";
