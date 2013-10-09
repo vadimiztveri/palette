@@ -33,7 +33,7 @@ var get_value_green_blue_field = function(blue, green){
  */
 var get_value_red_field = function(red){
   color.red = chance_dec_to_hex(red);
-  change_green_blue_for_red(red);
+  change_green_blue_on_red(red);
   display_color();
 }
 
@@ -75,7 +75,7 @@ var hex_to_dec = function(hex){
  *
  * @param {String} color_hex цвет в RGB (например, "002244")
  * Не возвращает данные.
- * Если строка состоит не из тех символов, или символов не 3 и не 6, то запускает функцию отображения ошибки
+ * Если строка состоит не из символов HEX, или число символов не 3 и не 6, то запускает функцию отображения ошибки
  */
 var get_new_color_hex = function(color_hex){
   	
@@ -98,44 +98,9 @@ var get_new_color_hex = function(color_hex){
       }
     display_color();
     chance_pointer_position();
-    change_green_blue_for_red();
+    change_green_blue_on_red();
     display_error_massage(0);
     }
-  }
-}
-
-/**
- * Проверяет состоит ли строка из HEX-символов
- *
- * @example
- * verification_symbols("36fdc0"); return true
- *
- * @param {String} color_hex цвет в RGB (например, "36fdc0")
- * @return {Boolean} (например: true)
-*/
-var verification_symbols = function(color_hex){
-  var reg = /^[0-9a-fA-F]$/,
-      verification = true;
-  for (i = 0;i < color_hex.length;i++){
-    if (!reg.test(color_hex[i])) {verification = false;}
-  }
-  return verification;
-}
-
-/**
- * Проверяет количество символов. Необходимо, чтобы было либо 3, либо 6.
- *
- * @example
- * verification_numbers("36fdc0"); return true
- *
- * @param {String} color_hex цвет в RGB (например, "36fdc0")
- * @return {Boolean} (например: true)
-*/
-var verification_numbers = function(color_hex){
-  if (color_hex.length === 3 || color_hex.length === 6){
-    return true;
-  } else {
-    return false;
   }
 }
 
