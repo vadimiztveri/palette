@@ -1,15 +1,14 @@
 /**
- * Выводит новое значение цвета в поле и отображает этот цвет
+ * Выводит новое значение цвета строкой HEX в поле и отображает этот цвет
  *
  * @example
- * display_color;
+ * display_color();
  *
  * Не получает и возвращает данные. Берет значения из color
  */
 var display_color = function(){
-  var string_color = color.red + color.green + color.blue;
-  document.getElementById('rgb').value = string_color;
-  document.getElementById('color').style.background = "#" + string_color;
+  document.getElementById('rgb').value = Color.get_hex();
+  document.getElementById('color').style.background = "#" + Color.get_hex();
 }
 
 /**
@@ -21,9 +20,9 @@ var display_color = function(){
  * Не получает и возвращает данные. Берет значения из color
  */
 var chance_pointer_position = function() {
-  document.getElementById('fider').style.left = hex_to_dec(color.red) + "px";
-  document.getElementById('draggable').style.top = hex_to_dec(color.green) + "px";
-  document.getElementById('draggable').style.left = hex_to_dec(color.blue) + "px";
+  document.getElementById('fider').style.left = Color.rgba[0] + "px";
+  document.getElementById('draggable').style.top = Color.rgba[1] + "px";
+  document.getElementById('draggable').style.left = Color.rgba[2] + "px";
 }
 
 /**

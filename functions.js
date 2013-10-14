@@ -1,11 +1,42 @@
 /**
- * Конфигурация данных о цвете
+ * конструктор цвета в RGBA
+ *
+ * @example
+ * new ColorInGradient([0, 125, 255]);
+ *
+ * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
+ * @constructor
  */
-var color = {
-  red: "00",
-  green: "00",
-  blue: "00"
+function ColorInGradient(rgba){
+   this.rgba = rgba;
 }
+
+/**
+ * Возвращает цвет в 6 символах HEX
+ *
+ * @example
+ * new ColorInGradient.get_hex(); // return "ff00cc"
+ *
+ * @this {ColorInGradient} 
+ * @return {String} 6 символов HEX (Например: "ff00cc")
+*/
+ColorInGradient.prototype.get_hex = function () {
+  var hex = "";
+  for (i = 0;i < 3;i++){
+    var hex_color = Number(this.rgba[i]).toString(16);
+    if (this.rgba[i] < 16){
+      hex_color = "0" + hex_color;
+    }
+    hex += hex_color
+  }
+  return hex;
+}
+
+/**
+ * Глобальная переменная, хранит данные о цвете
+ * Получает данные из конструктора ColorInGradient
+ */
+var Color = new ColorInGradient([0, 0, 0]);
 
 /**
  * Получает значения blue и green из палитры, записывает в текущий цвет, вызывает функцию отображения
@@ -17,8 +48,8 @@ var color = {
  * Не возвращает данные.
  */
 var get_value_green_blue_field = function(blue, green){
-  color.green = chance_dec_to_hex(green);
-  color.blue = chance_dec_to_hex(blue);
+  Color.rgba[1] = green;
+  Color.rgba[2] = blue;
   display_color();
 }
 
@@ -32,7 +63,7 @@ var get_value_green_blue_field = function(blue, green){
  * Не возвращает данные.
  */
 var get_value_red_field = function(red){
-  color.red = chance_dec_to_hex(red);
+  Color.rgba[0] = red;
   change_green_blue_on_red(red);
   display_color();
 }
@@ -45,7 +76,6 @@ var get_value_red_field = function(red){
  *
  * @param {Number} number градацию цвета от 0 до 255 (например: 255)
  * @return {String} строка в HEX (например: FF)
- */
 var chance_dec_to_hex = function(number){
   var hex = Number(number).toString(16);
   if (number < 16){
@@ -53,6 +83,7 @@ var chance_dec_to_hex = function(number){
   }
   return hex;
 }
+ */
 
 /**
  * Получает значение градации цвета в HEX, возвращает число от 0 до 256
@@ -63,7 +94,7 @@ var chance_dec_to_hex = function(number){
  * @param {String} hex строка градации цвета в HEX (например: "ff")
  * @return {Number} число от 0 до 255 (например: 255)
  */
-var hex_to_dec = function(hex){
+var chance_hex_to_dec = function(hex){
   return parseInt(hex,16);
 }
 
@@ -86,14 +117,14 @@ var get_new_color_hex = function(color_hex){
       display_error_massage(1);
     } else {
     if (color_hex.length === 6) {
-      color.red = color_hex.substring(0, 2);
-      color.green = color_hex.substring(2, 4);
-      color.blue = color_hex.substring(4);
+      Color.rgba[0] = chance_hex_to_dec(color_hex.substring(0, 2));
+      Color.rgba[1] = chance_hex_to_dec(color_hex.substring(2, 4));
+      Color.rgba[2] = chance_hex_to_dec(color_hex.substring(4));
       } else {
         if (color_hex.length === 3){
-          color.red = color_hex[0] + color_hex[0];
-          color.green = color_hex[1] + color_hex[1];
-          color.blue = color_hex[2] + color_hex[2];
+          Color.rgba[0] = chance_hex_to_dec(color_hex[0] + color_hex[0]);
+          Color.rgba[1] = chance_hex_to_dec(color_hex[1] + color_hex[1]);
+          Color.rgba[2] = chance_hex_to_dec(color_hex[2] + color_hex[2]);
         }
       }
     display_color();
