@@ -29,12 +29,12 @@ var chance_pointer_position = function() {
  * Получает значения red, меняет цвет большого квадратного окна.
  *
  * @example
- * change_green_blue_for_red("125");
+ * change_green_blue_field_on_red("125");
  *
  * @param {Number} red градацию цвета от 0 до 255 (например: 125)
  * Не возвращает данные
  */
-var change_green_blue_on_red = function(red){
+var change_green_blue_field_on_red = function(red){
   var opacity = red / 255;
   document.getElementById('square-red').style.opacity = opacity;
 }
@@ -45,13 +45,10 @@ var change_green_blue_on_red = function(red){
  * @example
  * display_error_massage(1);
  *
- * @param {Number} number Номер ошибки (0, 1 или 2) (например: 1)
+ * @param {String} error Сообщение об ошибке текстом (например: "")
  * Номер 0 означает, что вводимые данные прошли валидацию и функция удаляет сообщение об ошибке.
  * Не возвращает данные.
 */
-var display_error_massage = function(number) {
-  var text = "";
-  if (number === 1) {text = "Введите 6 или 3 символа, например: ffffff, ссс.";}
-  if (number === 2) {text = "Символы должны быть либо цифрами, либо буквам латинского алфавита от A до F";}
-  document.getElementById('error').innerHTML = text;
+var display_error_massage = function(error) {
+  document.getElementById('error').innerHTML = error;
 }

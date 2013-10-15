@@ -64,26 +64,9 @@ var get_value_green_blue_field = function(blue, green){
  */
 var get_value_red_field = function(red){
   Color.rgba[0] = red;
-  change_green_blue_on_red(red);
+  change_green_blue_field_on_red(red);
   display_color();
 }
-
-/**
- * Получает значение градации цвета от 0 до 255, возвращает в HEX
- *
- * @example
- * chance_dec_to_hex(255); // return "FF"
- *
- * @param {Number} number градацию цвета от 0 до 255 (например: 255)
- * @return {String} строка в HEX (например: FF)
-var chance_dec_to_hex = function(number){
-  var hex = Number(number).toString(16);
-  if (number < 16){
-    hex = "0" + hex;
-  }
-  return hex;
-}
- */
 
 /**
  * Получает значение градации цвета в HEX, возвращает число от 0 до 256
@@ -109,30 +92,25 @@ var chance_hex_to_dec = function(hex){
  * Если строка состоит не из символов HEX, или число символов не 3 и не 6, то запускает функцию отображения ошибки
  */
 var get_new_color_hex = function(color_hex){
-  	
-  if (!verification_symbols(color_hex)) {
-    display_error_massage(2);
-  } else {
-    if (!verification_numbers(color_hex)) {
-      display_error_massage(1);
-    } else {
-    if (color_hex.length === 6) {
-      Color.rgba[0] = chance_hex_to_dec(color_hex.substring(0, 2));
-      Color.rgba[1] = chance_hex_to_dec(color_hex.substring(2, 4));
-      Color.rgba[2] = chance_hex_to_dec(color_hex.substring(4));
+   if (verification_all(color_hex)) {
+      if (color_hex.length === 6) {
+         Color.rgba[0] = chance_hex_to_dec(color_hex.substring(0, 2));
+         Color.rgba[1] = chance_hex_to_dec(color_hex.substring(2, 4));
+         Color.rgba[2] = chance_hex_to_dec(color_hex.substring(4));
       } else {
-        if (color_hex.length === 3){
-          Color.rgba[0] = chance_hex_to_dec(color_hex[0] + color_hex[0]);
-          Color.rgba[1] = chance_hex_to_dec(color_hex[1] + color_hex[1]);
-          Color.rgba[2] = chance_hex_to_dec(color_hex[2] + color_hex[2]);
-        }
+      if (color_hex.length === 3){
+         Color.rgba[0] = chance_hex_to_dec(color_hex[0] + color_hex[0]);
+         Color.rgba[1] = chance_hex_to_dec(color_hex[1] + color_hex[1]);
+         Color.rgba[2] = chance_hex_to_dec(color_hex[2] + color_hex[2]);
       }
-    display_color();
-    chance_pointer_position();
-    change_green_blue_on_red();
-    display_error_massage(0);
-    }
-  }
+      display_color();
+      chance_pointer_position();
+      change_green_blue_field_on_red();
+      display_error_massage("");
+      }
+   } else {
+    display_error_massage(verification_message(color_hex));
+   }
 }
 
 /**
