@@ -32,40 +32,121 @@ ColorInGradient.prototype.get_hex = function () {
   return hex;
 };
 
+
 /**
- * Получает значения blue и green из палитры, записывает в текущий цвет, вызывает функцию отображения
+ * Получает значения цвета и записывает их
  *
  * @example
- * color.get_gradient_blue_green(22, 44);
+ * color.change([0, 22, 44]);
  *
- * @param {String} blue, green градации каждого цвета от 0 до 255 в HEX (22, 44)
+ * @param {Array} три цвета (red, blue, green), градации от 0 до 255 ([0, 22, 44])
  * Не возвращает данные.
  */
-ColorInGradient.prototype.get_gradient_blue_green = function(blue, green){
-  color.rgba[1] = green;
-  color.rgba[2] = blue;
-  this.display_color();
+ColorInGradient.prototype.change = function(new_color){
+  if (new_color[0]) {this.rgba[0] = new_color[0];}
+  if (new_color[1]) {this.rgba[1] = new_color[1];}
+  if (new_color[2]) {this.rgba[2] = new_color[2];}
+  var color_output = new ColorOutput(this.get_hex());
+  color_output.redraw();
 };
 
+
+
 /**
- * Получает значения red, записывает в текущий цвет, вызывает функции отображения
+ * Конструктор квадрата с градациями зеленого и синего цветов
  *
  * @example
- * get_gradient_red(125);
+ * new GreenBleuSquare([0, 125, 255]);
  *
- * @param {Number} red градацию цвета от 0 до 255 (например: 125)
+ * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
+ * @constructor
  */
-ColorInGradient.prototype.get_gradient_red = function(red) {
-  color.rgba[0] = red;
-  color.change_green_blue_field_on_red(red);
-  this.display_color();
-};
+var GreenBluePalette = function (color) {
+  this.green_color = color[1];
+  this.green_cursor_position = color[1];
+  this.blue_color = color[2];
+  this.blue_cursor_position = color[2];
+  this.effect_of_red = color[0];
+}
 
 /**
- * Глобальная переменная, хранит данные о цвете
- * Получает данные из конструктора ColorInGradient
+ * Меняет значения
  */
+GreenBluePalette.prototype.change = function(color) {
+  if (color[1]) {this.green_color = color[1]};
+  if (color[1]) {this.green_cursor_position = color[1]};
+  if (color[2]) {this.blue_color = color[2]};
+  if (color[2]) {this.blue_cursor_position = color[2]};
+  if (color[0]) {this.effect_of_red = color[0]};
+  document.getElementById('draggable').style.top = this.green_cursor_position + "px";
+  document.getElementById('draggable').style.left = this.blue_cursor_position + "px";
+  document.getElementById('square-red').style.opacity = this.effect_of_red / 255;
+}
+
+/**
+ * Конструктор квадрата (ползунка) с градациями красного цвета
+ *
+ * @example
+ * new RedSquare([0, 125, 255]);
+ *
+ * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
+ * @constructor
+ */
+var RedPalette = function (color) {
+  this.red_color = color[0];
+  this.red_cursor_position = color[0];
+}
+
+/**
+ * Меняет значения
+ */
+RedPalette.prototype.change = function(color) {
+  if (color[0]) {this.red_color = color[0]};
+  if (color[0]) {this.red_cursor_position = color[0]};
+  document.getElementById('fider').style.left = this.red_cursor_position + "px";
+  document.getElementById('square-red').style.opacity = this.effect_of_red / 255;
+}
+
+
+/**
+ * Конструктор данных для вывода
+ *
+ * @example
+ * new ColorOutput([0, 125, 255]);
+ *
+ * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
+ * @constructor
+ */
+var ColorOutput = function (hex_color) {
+  this.hex_color = hex_color;
+}
+
+ColorOutput.prototype.redraw = function() {
+  document.getElementById('rgb').value = this.hex_color;
+  document.getElementById('color').style.background = "#" + this.hex_color;
+}
+
+/**
+ * Конструктор для получения цвета из поля
+ *
+ * @example
+ * new ColorOutput([0, 125, 255]);
+ *
+ * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
+ * @constructor
+ */
+var ColorInput = function (color_hex) {
+  this.color_hex = color_hex;
+}
+
+
+
 var color = new ColorInGradient([0, 0, 0]);
+var green_blue_palette = new GreenBluePalette([0, 0, 0]);
+var red_palette = new RedPalette([0, 0, 0]);
+
+
+
 
 /**
  * Получает цвет в HEX (RGB), вызывает функции отображения цвета
@@ -76,23 +157,37 @@ var color = new ColorInGradient([0, 0, 0]);
  * @param {String} color_hex цвет в RGB (например, "002244")
  */
 var get_new_color_hex = function(color_hex){
-  if (color.verification(color_hex)[0]) {
-    if (color_hex.length === 6) {
-      color.rgba[0] = parseInt(color_hex.substring(0, 2), 16);
-      color.rgba[1] = parseInt(color_hex.substring(2, 4), 16);
-      color.rgba[2] = parseInt(color_hex.substring(4), 16);
-    } else {
-      color.rgba[0] = parseInt((color_hex[0] + color_hex[0]), 16);
-      color.rgba[1] = parseInt((color_hex[1] + color_hex[1]), 16);
-      color.rgba[2] = parseInt((color_hex[2] + color_hex[2]), 16);
-    }
-    color.display_color();
-    color.chance_pointer_position();
-    color.change_green_blue_field_on_red();
-    color.display_error_massage("");
+  color_input = new ColorInput(color_hex);
+  text_error = color_input.errors();
+  if (text_error === undefined) {
+    color_input.give_new_color();
+    green_blue_palette.change(color.rgba);
+    red_palette.change(color.rgba);
+    text_error = "";
   }
-  color.display_error_massage(color.verification(color_hex)[1]);
+  color_input.display_error_message(text_error);
 };
+
+/**
+ * Присваевает новые цвета
+ *
+ * @example
+ * give_new_colors("002244");
+ *
+ * @param {String} color_hex цвет в RGB, 6 или 3 символа (например, "002244")
+ */
+ColorInput.prototype.give_new_color = function() {
+  if (this.color_hex.length === 6) {
+    color.change([parseInt(this.color_hex.substring(0, 2), 16), parseInt(this.color_hex.substring(2, 4), 16), parseInt(this.color_hex.substring(4), 16)]);
+  } else {
+    color.change([parseInt((this.color_hex[0] + this.color_hex[0]), 16), parseInt((this.color_hex[1] + this.color_hex[1]), 16), parseInt((this.color_hex[2] + this.color_hex[2]), 16)]);
+  }
+}
+
+ColorInput.prototype.display_error_message = function(error) {
+  document.getElementById('error').innerHTML = error;
+}
+
 
 /**
  * Обращение к JQ, указание на DIV с id="draggable" как на объект, который будет перетаскиваться.
@@ -105,7 +200,8 @@ $(function(){
     opacity: 0.6,
     refreshPosition: true,
     drag: function(event, ui) {
-      color.get_gradient_blue_green(ui.position.left, ui.position.top)
+      color.change([false, ui.position.top, ui.position.left]);
+      green_blue_palette.change([false, ui.position.top, ui.position.left]);
     }
   });
 });
@@ -122,7 +218,9 @@ $(function(){
     refreshPosition: true,
     axis: "x",
     drag: function(event, ui) {
-      color.get_gradient_red(ui.position.left);
+      color.change([ui.position.left, false, false]);
+      red_palette.change([ui.position.left, false, false]);
+      green_blue_palette.change([ui.position.left, false, false]);
     }
   });
 });
