@@ -14,7 +14,7 @@
 	<body>
 		<h1>Визуальный подбор цвета в RGB</h1>
 
-		<p>#<input id="input-color-hex" onchange="get_new_color_hex(this.value)" value="000000" onfocus="value=''"></p>
+		<p>#<input id="input-color-hex" value="000000" onfocus="value=''"></p>
 		<p id="error"></p>
 
 		<div class="square-field">
@@ -27,13 +27,31 @@
 		</div>
 
 		<input id="rgb" value="000000"></input>
-		<div id="color"></div>
+		<div id="color-ui"></div>
 
 		<script src="color.js"></script>
-		<script src="green-blue-palette.js"></script>
-		<script src="red-palette.js"></script>
-		<script src="color-output.js"></script>
-		<script src="color-input.js"></script>
+		<script src="green_blue_palette.js"></script>
+		<script src="red_palette.js"></script>
+		<script src="color_output.js"></script>
+		<script src="color_input.js"></script>
+
+		<script type="text/javascript">
+			function Application() {
+			};
+			
+			Application.prototype.run = function() {
+				var start_color = [0, 0, 0];
+
+				this.color = new Color(start_color);
+				this.green_blue_palette = new GreenBluePalette(start_color);
+				this.green_blue_palette.start_receiving_events;
+				this.red_palette = new RedPalette(start_color);
+				this.red_palette.start_receiving_events;
+			};
+			
+			var colors_app = new Application();
+			colors_app.run();
+		</script>
 
 	</body>
 </html>
