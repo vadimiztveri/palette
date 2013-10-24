@@ -1,3 +1,5 @@
+(function(){
+
 /**
  * Конструктор квадрата с градациями зеленого и синего цветов
  *
@@ -7,7 +9,7 @@
  * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
  * @constructor
  */
-var GreenBluePalette = function (color) {
+this.GreenBluePalette = function (color) {
   this.green_color = color[1];
   this.blue_color = color[2];
   this.effect_of_red = color[0];
@@ -42,3 +44,5 @@ GreenBluePalette.prototype.start_receiving_events = $(function(){
     }
   });
 });
+
+}).call(this);

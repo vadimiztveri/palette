@@ -1,9 +1,11 @@
+(function(){
+  
 /**
  * Конструктор для получения цвета из поля
  * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
  * @constructor
  */
-var ColorInput = function (color_hex) {
+this.ColorInput = function (color_hex) {
   this.color_hex = color_hex;
 }
 
@@ -18,7 +20,6 @@ var ColorInput = function (color_hex) {
  * Если ошибок нет, вернет undefined
 */
 ColorInput.prototype.errors = function() {
-  var text_errors = "";
   if (this.error_symbols()) {
     return "Можно использовать цифры от 0 до 9 или буквы латинского алфавита от a до f";
   }
@@ -94,3 +95,5 @@ document.getElementById('input-color-hex').onchange = function(){
   }
   color_input.display_error_message(text_error);
 };
+
+}).call(this);
