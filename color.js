@@ -1,11 +1,9 @@
-(function(){
-
 /**
  * Цвета в RGBA
  * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
  * @constructor
  */
-this.Color = function(rgba) {
+var Color = function(rgba) {
   this.rgba = rgba;
 };
 
@@ -36,6 +34,3 @@ Color.prototype.change = function(new_color){
   var color_output = new ColorOutput(this.get_hex());
   color_output.redraw();
 };
-
-
-}).call(this);

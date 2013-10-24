@@ -1,5 +1,3 @@
-(function(){
-
 /**
  * Конструктор квадрата с градациями зеленого и синего цветов
  *
@@ -27,6 +25,7 @@ GreenBluePalette.prototype.change = function(color) {
   document.getElementById('square-red').style.opacity = this.effect_of_red / 255;
 };
 
+
 /**
  * Обращение к JQ, указание на DIV с id="draggable" как на объект, который будет перетаскиваться.
  * ui.position.top - количество пикселей сверху от родителя
@@ -44,5 +43,3 @@ GreenBluePalette.prototype.start_receiving_events = $(function(){
     }
   });
 });
-
-}).call(this);

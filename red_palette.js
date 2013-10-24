@@ -1,5 +1,3 @@
-(function(){
-
 /**
  * Конструктор ползунка с градациями красного цвета
  * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
@@ -33,5 +31,3 @@ RedPalette.prototype.start_receiving_events = $(function(){
     }
   });
 });
-
-}).call(this);

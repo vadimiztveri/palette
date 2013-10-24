@@ -1,5 +1,3 @@
-(function(){
-  
 /**
  * Конструктор данных для вывода цвета
  * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
@@ -14,5 +12,3 @@ ColorOutput.prototype.redraw = function() {
   document.getElementById('color-ui').style.background = "#" + this.hex_color;
 //  document.getElementById('rgb').selected = true;
 };
-
-}).call(this);

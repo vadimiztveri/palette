@@ -1,5 +1,3 @@
-(function(){
-  
 /**
  * Конструктор для получения цвета из поля
  * @param {Area} rgba, три числа от 0 до 255, градации цветов в RGB (например: [0, 125, 255])
@@ -95,5 +93,3 @@ document.getElementById('input-color-hex').onchange = function(){
   }
   color_input.display_error_message(text_error);
 };
-
-}).call(this);
