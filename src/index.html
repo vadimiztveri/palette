@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Визуальный подбор цвета в RGB</title>
+		<meta http-equiv="Content-Language" content="ru">
+		<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+		<link type="text/css" href="css/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+
+		<link type="text/css" href="css/style.css" rel="stylesheet" />
+	</head>
+	<body>
+		<h1>Визуальный подбор цвета в RGB</h1>
+
+		<p>#<input id="input-color-hex" value="000000" onfocus="value=''"></p>
+		<p id="error"></p>
+
+		<div class="square-field">
+			<div id="square-red"></div>
+			<div id="draggable"></div>
+		</div>
+
+		<div class="rectangular-field">
+			<div id="fider"></div>
+		</div>
+
+		<input id="rgb" value="000000"></input>
+		<div id="color-ui"></div>
+
+		<script src="scripts/jquery-1.9.1.js" type="text/javascript"></script>
+		<script src="scripts/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+		<script src="scripts/color.js"></script>
+		<script src="scripts/green_blue_palette.js"></script>
+		<script src="scripts/red_palette.js"></script>
+		<script src="scripts/color_output.js"></script>
+		<script src="scripts/color_input.js"></script>
+		<script src="scripts/application.js"></script>
+
+	</body>
+</html>
