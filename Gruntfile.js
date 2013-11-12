@@ -8,23 +8,29 @@ module.exports = function(grunt) {
         // сначала выполнятся все таски и потом начнётся слежение
         atBegin: true
       },
+
       js: {
-        // Все файлы в папке www/js (включая подпапки)
+        // Все файлы в папке src/script/ (включая подпапки)
         files: 'src/script/**/*.js',
-        tasks: ['concat:js', 'uglify']
+        tasks: ['concat:js', 'closure-compiler']
       },
+
       css: {
-        // Тоже самое с www/css
+        // Тоже самое с src/css
         files: 'src/css/**/*.css',
-        tasks: ['concat:css', 'autoprefixer']
+        tasks: ['concat:css', 'csso']
       }
+    },
+    js: {
+        files: 'build/css/all.css',
+        tasks: ['closure-compiler']
     },
     concat: {
       // Склеить
       js: {
         files: {
           // Все файлы разом, подключаются в указанном порядке
-          'bild/js/all.js': [
+          'temp/all.js': [
             'src/scripts/jquery-1.9.1.js',
             'src/scripts/jquery-ui-1.10.3.custom.min.js',
             'src/scripts/color.js',
@@ -38,40 +44,37 @@ module.exports = function(grunt) {
       },
       css: {
         files: {
-          'bild/css/all.css': 'src/css/**/*.css'
+          'build/css/all.css': 'src/css/**/*.css'
         }
       }
     },
-    autoprefixer: {
-      // Расставить необходимые префиксы в ЦСС
-      main: {
-        files: {
-          'bild/css/all.css': 'bild/css/all.css'
-        }
-      }
-    },
-    uglify: {
-      // Сжать скрипты
-      main: {
-        files: {
-          'bild/js/all.js': 'bild/js/all.js'
-        }
+    'closure-compiler': {
+      frontend: {
+        closurePath: 'closure-compiler',
+        js: 'temp/all.js',
+        jsOutputFile: 'build/js/all.js',
+        noreport: true,
+        options: {}
       }
     },
     csso: {
       // Cжать стили
-      // Ссылаемся на autoprefixer, чтобы не повторяться
-      main: '<%= autoprefixer.main %>'
+       main: {
+        files: {
+          'build/css/all.css': 'build/css/all.css'
+        }
+      }
     }
   });
 
   // Загружаем установленные задачи
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-autoprefixer');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-csso');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-closure-compiler');
 
   // Задача по умолчанию (`grunt` в терминале)
-  grunt.registerTask('default', ['concat', 'autoprefixer', 'uglify', 'csso']);
+  grunt.registerTask('default', ['concat', 'csso', 'closure-compiler']);
+
 };
